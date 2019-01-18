@@ -44,3 +44,15 @@ electron.ipcMain.on('get-global-packages', event => {
     event.sender.send('set-global-packages', packages);
   }).catch(console.error);
 });
+//
+electron.ipcMain.on('check-package-version', (event, args) => {
+  shellExec(`npm view ${args} version`).then(version => {
+    event.sender.send('checked-package-version', version);
+  }).catch(console.error);
+});
+//
+electron.ipcMain.on('get-outdated-packages', event => {
+  shellExec(`npm outdated --json`).then(packages => {
+    event.sender.send('set-outdated-packages', packages);
+  }).catch(console.error);
+});
