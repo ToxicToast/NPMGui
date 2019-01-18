@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { IpcService } from './core/services/ipc.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,9 @@ import { AppComponent } from './app.component';
     MaterialModule.forRoot(),
     CoreModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    IpcService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
