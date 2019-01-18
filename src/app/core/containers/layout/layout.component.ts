@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { IpcService } from '../../services/ipc.service';
+
+import { Store, Select } from '@ngxs/store';
+import { LoadGlobalPackages } from '../../../store/actions/packages.actions';
+import { PackagesState } from '../../../store/states/packages.state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -8,17 +12,16 @@ import { IpcService } from '../../services/ipc.service';
 })
 export class LayoutComponent implements OnInit {
 
+  @Select(PackagesState) packages$: Observable<any>;
 
 
-  constructor(private _ipc: IpcService) { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
-    console.error('LayoutComponent', this);
-    this.getGlobalPackages();
-    // this.checkPackageVersion();
-    this.getOutdatedPackages();
+    this.store.dispatch(new LoadGlobalPackages());
   }
 
+  /*
   private getGlobalPackages(): void {
     this._ipc.send('get-global-packages');
     this._ipc.on('set-global-packages', (event, args: { cmd: string, code: number, stderr?: string, stdout: string}) => {
@@ -40,6 +43,5 @@ export class LayoutComponent implements OnInit {
       const packageArray = JSON.parse(args.stdout);
       console.error('getOutdatedPackages', packageArray);
     });
-  }
-
+  }*/
 }

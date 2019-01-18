@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { PackagesState } from './store/states/packages.state';
 
 
 @NgModule({
@@ -23,7 +24,9 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
     AppRoutingModule,
     MaterialModule.forRoot(),
     CoreModule.forRoot(),
-    NgxsModule.forRoot([]),
+    NgxsModule.forRoot([
+      PackagesState
+    ]),
     NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [
