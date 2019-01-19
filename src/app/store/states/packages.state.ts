@@ -1,14 +1,15 @@
 import { State, Action, StateContext } from '@ngxs/store';
 import { IpcService } from '../../core/services/ipc.service';
 import { LoadGlobalPackages, SuccessGlobalPackages, ErrorGlobalPackages } from '../actions/packages.actions';
+import { Command } from '../models/Shell.models';
+import { DependenciesModel, PackageStateModel } from '../models/packages.models';
 
-// TODO : Interface
-@State<any>({
+@State<PackageStateModel>({
   name: 'packages',
   defaults: {
     loading: false,
     error: false,
-    packages: []
+    packages: null
   }
 })
 export class PackagesState {
@@ -16,40 +17,38 @@ export class PackagesState {
   constructor(private _ipc: IpcService) { }
 
   @Action(LoadGlobalPackages)
-  loadPackages(ctx: StateContext<any>) {
+  loadPackages(ctx: StateContext<PackageStateModel>) {
     ctx.patchState({
       loading: true,
-      packages: []
+      packages: null
     });
     //
     this._ipc.send('get-global-packages');
-    this._ipc.on('set-global-packages', (event, args) => {
-      console.error('LoadGlobalPackages', 'set-global-packages', args);
+    this._ipc.on('set-global-packages', (event, args: Command) => {
       try {
-        const packageArray = JSON.parse(args.stdout);
+        const packageArray: DependenciesModel = JSON.parse(args.stdout);
         ctx.dispatch(new SuccessGlobalPackages(packageArray));
       } catch (error) {
-        ctx.dispatch(new ErrorGlobalPackages(error));
+        ctx.dispatch(new ErrorGlobalPackages(args.stderr));
       }
     });
   }
 
   @Action(SuccessGlobalPackages)
   successPackages(ctx: StateContext<any>, action: SuccessGlobalPackages) {
-    console.error('SuccessGlobalPackages', action.packages);
+    const packageArray: DependenciesModel = action.packages;
     ctx.patchState({
       loading: false,
-      packages: action.packages
+      packages: packageArray
     });
   }
 
   @Action(ErrorGlobalPackages)
   errorPackages(ctx: StateContext<any>, action: ErrorGlobalPackages) {
-    console.error('ErrorGlobalPackages', action.message);
     ctx.patchState({
       loading: false,
       error: true,
-      packages: []
+      packages: null
     });
   }
 
