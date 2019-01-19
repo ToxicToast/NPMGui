@@ -1,16 +1,23 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './containers/layout/layout.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { HeaderComponent } from './components/header/header.component';
+import { MaterialModule } from '../material.module';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
-  declarations: [LayoutComponent, NavigationComponent, HeaderComponent],
+  declarations: [
+    LayoutComponent,
+    HeaderComponent,
+    LoadingComponent
+  ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule
   ],
   exports: [
-    LayoutComponent
+    LayoutComponent,
+    LoadingComponent
   ]
 })
 export class CoreModule {

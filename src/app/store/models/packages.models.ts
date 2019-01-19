@@ -1,7 +1,8 @@
 export interface PackageStateModel {
   loading: boolean;
   error: boolean;
-  packages: DependenciesModel; // TODO PackageModel
+  packages?: DependenciesModel;
+  outdated?: any;
 }
 
 export interface PackageModel {
@@ -12,4 +13,12 @@ export interface PackageModel {
 
 export interface DependenciesModel {
   dependencies: PackageModel[];
+  problems?: string[];
+}
+
+export interface PackageState {
+  title?: string;
+  installed_version?: string;
+  latest_version?: string;
+  outdated?: boolean;
 }

@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2>Dependencies</h2>
+    </div>
+  </div>
+  <div class="row" *ngIf="loading">
+    <div class="col-12 center-block">
+      <app-loading></app-loading>
+    </div>
+  </div>
+  <div class="row" *ngIf="!loading">
+    <div class="col-12">
+        <table mat-table [dataSource]="dependencyArray(dependencies)">
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Package </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="version">
+              <mat-header-cell *matHeaderCellDef> Version </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{setVersionDisplay(element.version)}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let element"> OUTDATED / UP2DATE </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                  <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> REMOVE BUTTON </mat-cell>
+                </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </table>
+    </div>
+  </div>
+</div>

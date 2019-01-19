@@ -3,10 +3,14 @@ const path = require('path');
 const url = require('url');
 const shellExec = require('shell-exec');
 //
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
+//
 let win;
 //
 function createWindow() {
-  win = new electron.BrowserWindow({
+  win = new BrowserWindow({
     width: 1024,
     height: 768,
     frame: true,
@@ -25,33 +29,34 @@ function createWindow() {
   win.on('closed', () => {
     win = null;
   });
+  BrowserWindow.addDevToolsExtension("C:\\Users\\thoma\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Extensions\\lmhkpmbekcpmknklioeibfkpmmfibljd\\2.17.0_0");
 }
 //
-electron.app.on('ready', createWindow);
-electron.app.on('window-all-closed', () => {
+app.on('ready', createWindow);
+app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    electron.app.quit();
+    app.quit();
   }
 });
-electron.app.on('activate', () => {
+app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
 });
 //
-electron.ipcMain.on('get-global-packages', event => {
+ipcMain.on('get-global-packages', event => {
   shellExec('npm list -g --depth 0 --json').then(packages => {
     event.sender.send('set-global-packages', packages);
   }).catch(console.error);
 });
 //
-electron.ipcMain.on('check-package-version', (event, args) => {
+ipcMain.on('check-package-version', (event, args) => {
   shellExec(`npm view ${args} version`).then(version => {
     event.sender.send('checked-package-version', version);
   }).catch(console.error);
 });
 //
-electron.ipcMain.on('get-outdated-packages', event => {
+ipcMain.on('get-outdated-packages', event => {
   shellExec(`npm outdated --json`).then(packages => {
     event.sender.send('set-outdated-packages', packages);
   }).catch(console.error);

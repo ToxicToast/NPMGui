@@ -2,3 +2,21 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.icon {
+  padding: 0 14px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+button {
+  margin-right: 8px !important;
+}
+
+table {
+  width: 100% !important;
+}
+
+@import "~bootstrap/dist/css/bootstrap.css";

@@ -12,23 +12,11 @@ import { Observable } from 'rxjs';
 })
 export class LayoutComponent implements OnInit {
 
-  @Select(PackagesState) packages$: Observable<any>;
+  constructor() { }
 
-
-  constructor(private store: Store) { }
-
-  ngOnInit() {
-    this.store.dispatch(new LoadGlobalPackages());
-  }
+  ngOnInit() { }
 
   /*
-  private getGlobalPackages(): void {
-    this._ipc.send('get-global-packages');
-    this._ipc.on('set-global-packages', (event, args: { cmd: string, code: number, stderr?: string, stdout: string}) => {
-      const packageArray = JSON.parse(args.stdout);
-      console.error('getGlobalPackages', packageArray);
-    });
-  }
 
   private checkPackageVersion() {
     this._ipc.send('check-package-version', 'typescript');
